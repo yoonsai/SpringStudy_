@@ -66,5 +66,41 @@ public class GoodsController {
  		model.addAttribute("main_jsp", "../store/goods_all_detail.jsp");
  		return "main/main";
  	}
+ 	@GetMapping("store/goods_find.do")
+ 	public String goods_find(String ss,String page,Model model)
+ 	{
+ 		if(page==null)
+ 			page="1";
+ 		if(ss==null)
+ 		{
+ 			ss="특가";
+ 		}
+ 		int curpage=Integer.parseInt(page);
+		int rowSize=12;
+		int start=(curpage*rowSize)-(rowSize-1);
+		int end=curpage*rowSize;
+		
+ 		Map map=new HashMap();
+ 		map.put("start", start);
+ 		map.put("end", end);
+ 		map.put("ss", ss);
+ 		
+ 		final int BLOCK=10;
+		int startPage=((curpage-1)/BLOCK*BLOCK)+1;
+		int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
+		int totalpage=dao.goodsFindTotalPage(map);
+		if(endPage>totalpage)
+			endPage=totalpage;
+		List<GoodsVO> list=dao.goodsFindData(map);
+		
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("curpage", curpage);
+		model.addAttribute("totalpage", totalpage);
+ 		model.addAttribute("list", list);
+ 		model.addAttribute("ss", ss);
+ 		model.addAttribute("main_jsp", "../store/goods_find.jsp");
+ 		return "main/main";
+ 	}
  	
 }

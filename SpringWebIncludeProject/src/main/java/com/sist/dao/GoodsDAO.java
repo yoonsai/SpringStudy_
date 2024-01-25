@@ -1,8 +1,10 @@
 package com.sist.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +29,14 @@ public class GoodsDAO {
 	}
 	public GoodsVO goodsCookie(int no) {
 		return mapper.goodsDetailData(no);
+	}
+    public List<GoodsVO> goodsFindData(Map map)
+    {
+    	return mapper.goodsFindData(map);
+    }
+	
+	public int goodsFindTotalPage(Map map)
+	{
+		return mapper.goodsFindTotalPage(map);
 	}
 }

@@ -1,6 +1,7 @@
 package com.sist.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -26,5 +27,15 @@ public interface GoodsMapper {
 	
 	@Select("SELECT * FROM goods_all WHERE no=#{no}")
 	public GoodsVO goodsDetailData(int no);
+	
+	@Select("SELECT no,goods_name,goods_poster,goods_price,num "
+			+ "FROM (SELECT no,goods_name,goods_poster,goods_price,rownum as num "
+			+ "FROM (SELECT no,goods_name,goods_poster,goods_price "
+			+ "FROM goods_all WHERE goods_name LIKE '%'||#{ss}||'%' ORDER BY no)) "
+			+ "WHERE num BETWEEN #{start} and #{end}")
+	public List<GoodsVO> goodsFindData(Map map);
+	
+	@Select("SELECT CEIL(COUNT(*)/12.0) FROM goods_all WHERE goods_name LIKE '%'||#{ss}||'%'")
+	public int goodsFindTotalPage(Map map);
 	
 } 
