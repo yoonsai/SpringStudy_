@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.sist.dao.*;
 
 @Controller
-public class MainCotroller {
+public class MainController {
 	@Autowired
 	private FoodDAO dao;
 	
