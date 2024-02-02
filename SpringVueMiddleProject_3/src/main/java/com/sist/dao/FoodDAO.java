@@ -19,6 +19,7 @@ public class FoodDAO {
     {
     	return mapper.FoodListData(start, end);
     }
+    
 	
 	public int FoodTotalPage()
 	{
