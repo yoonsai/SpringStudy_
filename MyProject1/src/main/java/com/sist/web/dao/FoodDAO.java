@@ -28,13 +28,23 @@ JJIM int
  */
 
 public interface FoodDAO extends JpaRepository<Food, Integer>{
-	@Query(value="SELECT * "
-			+ "FROM food ORDER BY no ASC "
-			+ "LIMIT :start,12",nativeQuery=true)
-	public List<Food> foodListData(@Param("start") int start);
-	
 	public Food findByNo(int no);
 	
-	@Query(value="SELECT COUNT(*) FROM food",nativeQuery=true)
-	public int foodRowCount();
+	@Query(value="SELECT * "
+			+ "FROM food ORDER BY hit DESC "
+			+ "LIMIT 0,4",nativeQuery=true)
+	public List<Food> foodMainListData();
+//	
+//	
+//	@Query(value="SELECT COUNT(*) FROM food",nativeQuery=true)
+//	public int foodRowCount();
+	
+	@Query(value="SELECT * "
+			+ "FROM food WHERE title LIKE CONCAT('%',:title,'%') ORDER BY no ASC "
+			+ "LIMIT :start,12",nativeQuery=true)
+	public List<Food> foodListData(@Param("start") Integer start,@Param("title") String title);
+	
+	@Query(value="SELECT COUNT(*) FROM food WHERE title LIKE CONCAT('%',:title,'%')",nativeQuery=true)
+	public int foodRowCount(@Param("title") String title);
+	
 }
