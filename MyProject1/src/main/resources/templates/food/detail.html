@@ -3,6 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script src="https://unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+let i=0;
+$(function(){
+	/* $('.updates').click(function(){
+		$('.ups').hide()
+		$('.updates').val('수정')
+		let no=$(this).attr("alt");
+		if(i==0)
+		{
+			$(this).val("취소");
+			$('#u'+no).show()
+			i=1;
+		}
+		else
+		{
+			$(this).val("수정");
+			$('#u'+no).hide()
+			i=0;
+		}
+	}) */
+})
+</script>
 <style type="text/css">
 #food_detail .img-fluid {
     max-width: 100%;
@@ -26,9 +51,9 @@
    align-items: flex-end;
    gap:10px;
 }
-#food_detail .subheading{
+/* #food_detail .subheading{
    border-bottom: 1px solid #ededed;
-}
+} */
 #food_detail .imageWrap{
    display: flex;
    align-items: center;
@@ -40,11 +65,12 @@
    justify-content: space-between;
    height: 300px;
    gap: 10px;
-    margin-top: 39px;
+    margin-top: 50px;
+    width: 100%;
 }
 #food_detail .infobox{
     height: 100%;
-    width: 500px;
+    width: 675px;
     border: 1px solid;
     border-radius: 30px;
     padding: 51px;
@@ -62,6 +88,50 @@
 }
 #food_detail .span{
    color: black;
+}
+.tapMenuBar{
+   display: flex !important;
+    justify-content: center;
+    gap: 500px;
+    border-bottom: 1px solid #ededed;
+   
+}
+.reviewArea{
+   margin-bottom: 100px;
+}
+.ftco-section {
+    padding: 6em 0 0 0;
+}
+.replyArea{
+   width: 100%;
+}
+textarea{
+   width: 100%;
+   min-height: 200px;
+}
+.replyBtn{
+   text-align: right;
+}
+.replybtn{
+   background-color: #82ae46;
+   color: white;
+   width: 180px;
+   margin-left: 8px;
+   padding-left: 2rem !important;
+   padding-right: 2rem !important;
+}
+.replybtn:hover{
+   background-color: #3f6112;
+   color: white;
+}
+.replyList{
+   width: 100%;
+}
+.replyTop{
+    display: flex;
+    gap: 10px;
+    text-align: left;
+    border-bottom:1px solid #e5e5e5;
 }
 </style>
 </head>
@@ -99,36 +169,8 @@
 							</p>
 						</div>
     				<p class="price"><span></span></p>
-    				<!-- <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until.
-						</p> -->
 						<div class="row mt-4">
-							<!-- <div class="col-md-6">
-								<div class="form-group d-flex">
-		              <div class="select-wrap">
-	                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                  <select name="" id="" class="form-control">
-	                  	<option value="">Small</option>
-	                    <option value="">Medium</option>
-	                    <option value="">Large</option>
-	                    <option value="">Extra Large</option>
-	                  </select>
-	                </div>
-		            </div>
-							</div> -->
 							<div class="w-100"></div>
-							<!-- <div class="input-group col-md-6 d-flex mb-3">
-	             	<span class="input-group-btn mr-2">
-	                	<button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
-	                   <i class="ion-ios-remove"></i>
-	                	</button>
-	            		</span>
-	             	<input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-	             	<span class="input-group-btn ml-2">
-	                	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-	                     <i class="ion-ios-add"></i>
-	                 </button>
-	             	</span>
-	          	</div> -->
 	          	<div class="w-100"></div>
 	          	<div class="col-md-12">
 	          		<p style="color: #000;"></p>
@@ -141,21 +183,47 @@
     </section>
 
     <section class="ftco-section">
-    	<div class="container">
+    	<div class="container reviewArea">
 		 <div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
-          	<span class="subheading">Info</span>
+           <div class="tapMenuBar">
+             <span class="subheading" style="cursor: pointer" @click="info()">Info</span>
+             <span class="subheading" style="cursor: pointer" @click="review()">Review</span>
+           </div>
             <h2 class="mb-4"></h2>
-            <p th:each="cont:${conts}" th:text="${cont}"></p>
+            <p th:each="cont:${conts}" th:text="${cont}+'.'" v-show="infoShow"></p>
           </div>
+          
+          
+          <div class="replyList" v-show="reviewShow">
+           <div class="replyOne" v-for="rvo in replyList">
+            <div  class="replyTop">
+              <p>{{rvo.name}}</p><p>{{rvo.regdate}}</p>
+            </div>
+             <div><p>{{rvo.content}}</p></div>
+            </div>
+            <div>
+          </div>
+          
+          <div class="replyArea" v-show="reviewShow">
+            <textarea v-model="content" ref="content"></textarea>
+            <div class="replyBtn">
+             <button class="btn px-5 replybtn" @click="reply()">댓글달기</button>
+             <button class="btn px-5 replybtn" @click="back()">취소</button>
+            </div>
+                      
+          </div>
+          
+          
+          
          </div> 
-         <div class="imageWrap">
+         <div class="imageWrap" v-show="infoShow">
     	  <div th:each="img:${deimages}">
     	    <img th:src="${img}" style="width: 100%;">
     	  </div>
     	</div>
 
-    	<div class="info">
+    	<div class="info" v-show="infoShow">
     	  <div class="infobox">
     	    <div class="infodata">
     	     <span class="infotitle">메뉴</span>
@@ -179,9 +247,13 @@
     	    </div>
     	 </div> 
     	    <div id="map" style="width:100%;border-radius: 30px;height: 100%;"></div>
-	        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=666e34535b94b665d2f33b3ee94a689a&libraries=services"></script>
+    	</div>		
+        </div>
+        </div>
+        </section>
+         <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=666e34535b94b665d2f33b3ee94a689a&libraries=services"></script> -->
 			<script>
-			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			/* var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			    mapOption = {
 			        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
 			        level: 3 // 지도의 확대 레벨
@@ -216,158 +288,116 @@
 			        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 			        map.setCenter(coords);
 			    } 
-			});    
-			</script>
-    	 
-    	</div>		
-        </div>
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-<!--     	<div class="container">
-    		<div class="row">
-    			<div class="col-md-6 col-lg-3 ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="../images/product-1.jpg" alt="Colorlib Template">
-    						<span class="status">30%</span>
-    						<div class="overlay"></div>
-    					</a>
-    					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="#">Bell Pepper</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-		    					</div>
-	    					</div>
-	    					<div class="bottom-area d-flex px-3">
-	    						<div class="m-auto d-flex">
-	    							<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-	    								<span><i class="ion-ios-menu"></i></span>
-	    							</a>
-	    							<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-	    								<span><i class="ion-ios-cart"></i></span>
-	    							</a>
-	    							<a href="#" class="heart d-flex justify-content-center align-items-center ">
-	    								<span><i class="ion-ios-heart"></i></span>
-	    							</a>
-    							</div>
-    						</div>
-    					</div>
-    				</div>
-    			</div>
-    			<div class="col-md-6 col-lg-3 ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="../images/product-2.jpg" alt="Colorlib Template">
-    						<div class="overlay"></div>
-    					</a>
-    					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="#">Strawberry</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
-		    					</div>
-	    					</div>
-    						<div class="bottom-area d-flex px-3">
-	    						<div class="m-auto d-flex">
-	    							<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-	    								<span><i class="ion-ios-menu"></i></span>
-	    							</a>
-	    							<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-	    								<span><i class="ion-ios-cart"></i></span>
-	    							</a>
-	    							<a href="#" class="heart d-flex justify-content-center align-items-center ">
-	    								<span><i class="ion-ios-heart"></i></span>
-	    							</a>
-    							</div>
-    						</div>
-    					</div>
-    				</div>
-    			</div>
-    			<div class="col-md-6 col-lg-3 ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="../images/product-3.jpg" alt="Colorlib Template">
-	    					<div class="overlay"></div>
-	    				</a>
-    					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="#">Green Beans</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
-		    					</div>
-	    					</div>
-    						<div class="bottom-area d-flex px-3">
-	    						<div class="m-auto d-flex">
-	    							<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-	    								<span><i class="ion-ios-menu"></i></span>
-	    							</a>
-	    							<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-	    								<span><i class="ion-ios-cart"></i></span>
-	    							</a>
-	    							<a href="#" class="heart d-flex justify-content-center align-items-center ">
-	    								<span><i class="ion-ios-heart"></i></span>
-	    							</a>
-    							</div>
-    						</div>
-    					</div>
-    				</div>
-    			</div>
-    			<div class="col-md-6 col-lg-3 ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="../images/product-4.jpg" alt="Colorlib Template">
-    						<div class="overlay"></div>
-    					</a>
-    					<div class="text py-3 pb-4 px-3 text-center">
-    						<h3><a href="#">Purple Cabbage</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
-		    					</div>
-	    					</div>
-    						<div class="bottom-area d-flex px-3">
-	    						<div class="m-auto d-flex">
-	    							<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-	    								<span><i class="ion-ios-menu"></i></span>
-	    							</a>
-	    							<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-	    								<span><i class="ion-ios-cart"></i></span>
-	    							</a>
-	    							<a href="#" class="heart d-flex justify-content-center align-items-center ">
-	    								<span><i class="ion-ios-heart"></i></span>
-	    							</a>
-    							</div>
-    						</div>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    	</div> -->
-    </section>
+			});     */
+			
+			let replyApp=Vue.createApp({
+				   data(){
+				      return {
+				         infoShow:true,
+				         reviewShow:false,
+				         content:'',
+				         no:[[${vo.no}]],
+				         replyList:{}
+				      }
+				   },
+				   mounted(){
+					   this.replydata();
+					   if(window.kakao && window.kakao.maps)
+		   			   {
+		   				   this.initMap()
+		   			   }
+		   			   else
+		   			   {
+		   				   this.addScript()
+		   			   }
+					   
+				   },
+				   methods:{
+					  replydata(){
+						  axios.get('../reply/list',{
+							  params:{
+								  fno:this.no
+							  }
+						  }).then(response=>{
+							  console.log(response.data)
+							  this.replyList=response.data
+						  })
+					  },
+					  reply(){
+						  if (!this.content.trim()) {
+						        alert("댓글을 입력해주세요.");
+						        this.$refs.content.focus()
+						  }
+						  else{
+							  axios.post('../reply/insert',null,{
+								  params:{
+									  fno:this.no,
+									  content:this.content
+								  }
+							  }).then(response=>{
+								  console.log(response.data)
+								  this.replydata();
+								  this.content=''
+							  })
+						  }
+					  },
+				      info(){
+				         this.infoShow=true;
+				         this.reviewShow=false
+				      },
+				      review(){
+				         this.infoShow=false;
+				         this.reviewShow=true;
+				         this.replydata();
+				      },
+				      addScript(){
+				   			const script=document.createElement("script") //<script>
+				   			/* globel kakao */
+				   			script.onload=()=>kakao.maps.load(this.initMap)
+				   			script.src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=666e34535b94b665d2f33b3ee94a689a&libraries=services"
+				   			document.head.appendChild(script)
+				   		},
+				   		initMap(){
+				   			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+				   		    mapOption = {
+				   		        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+				   		        level: 3 // 지도의 확대 레벨
+				   		    };  
 
-		<!-- <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
-      <div class="container py-4">
-        <div class="row d-flex justify-content-center py-5">
-          <div class="col-md-6">
-          	<h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-          	<span>Get e-mail updates about our latest shops and special offers</span>
-          </div>
-          <div class="col-md-6 d-flex align-items-center">
-            <form action="#" class="subscribe-form">
-              <div class="form-group d-flex">
-                <input type="text" class="form-control" placeholder="Enter email address">
-                <input type="submit" value="Subscribe" class="submit px-3">
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section> -->
+				   		// 지도를 생성합니다    
+				   		var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+				   		// 주소-좌표 변환 객체를 생성합니다
+				   		var geocoder = new kakao.maps.services.Geocoder();
+
+				   		// 주소로 좌표를 검색합니다
+				   		geocoder.addressSearch('[[${vo.addr}]]', function(result, status) {
+
+				   		    // 정상적으로 검색이 완료됐으면 
+				   		     if (status === kakao.maps.services.Status.OK) {
+
+				   		        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+				   		        // 결과값으로 받은 위치를 마커로 표시합니다
+				   		        var marker = new kakao.maps.Marker({
+				   		            map: map,
+				   		            position: coords
+				   		        });
+
+				   		        // 인포윈도우로 장소에 대한 설명을 표시합니다
+				   		        var infowindow = new kakao.maps.InfoWindow({
+				   		        	content: '<div style="width:150px;text-align:center;padding:6px 0;">[[${vo.title}]]</div>'
+				   		        });
+				   		        infowindow.open(map, marker);
+
+				   		        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+				   		        map.setCenter(coords);
+				   		    } 
+				   		 });    
+				   		}
+				   }
+				}).mount(".reviewArea")
+
+			</script>
 </body>
 </html>
