@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>빈 페이지 | ㅇㅇㅇ</title>
+  <link rel="stylesheet" href="../board/css/setting.css">
+  <link rel="stylesheet" href="../board/css/plugin.css">
+  <link rel="stylesheet" href="../board/css/template.css">
+  <link rel="stylesheet" href="../board/css/common.css">
+  <link rel="stylesheet" href="../board/css/style.css">
+</head>
+
+<body>
+  <main class="th-layout-main ">
+    <!-- [S]opilsol-N24 -->
+    <div class="opilsol-N24" data-bid="JQLTGSCsrV">
+      <div class="content-container">
+        <div class="container-md">
+          <div class="tableset">
+           <h2 class="board_title">자유 게시판</h2>
+           <div class="pagechage">
+             <a href="../board/insert" class="newInsert">새글</a>
+           </div>
+            <div class="tableset-inner">
+              <table class="tableset-table table">
+                <colgroup>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+                  <col>
+                </colgroup>
+                <thead class="thead-border-top">
+                  <tr>
+                    <th class="number" scope="col">NO</th>
+                    <th scope="col">제목</th>
+                    <th class="last-child" scope="col">작성자</th>
+                    <th class="last-child" scope="col">작성일</th>
+                    <th class="last-child" scope="col">조회수</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="vo:${list}">
+                    <td class="number" th:text="${vo.no}"></td>
+                    <td>
+                      <a th:href="@{../board/detail(no=${vo.no})}" th:text="${vo.subject}"></a>
+                    </td>
+                    <td class="last-child" th:text="${vo.name}"></td>
+                    <td class="last-child" th:text="${vo.regdate}"></td>
+                    <td class="last-child" th:text="${vo.hit}"></td>
+                  </tr>  
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <nav class="pagiset pagiset-line">
+ 
+            <div class="pagiset-ctrl" th:if="${startPage>1}">
+              <a class="pagiset-link pagiset-prev" th:href="@{/board/list(page=${startPage-1})}">
+                <span class="visually-hidden">이전</span>
+              </a>
+            </div>
+            <div class="pagiset-list">
+              <a th:class="${curpage==i?'pagiset-link active-line':'pagiset-link'}" th:each="i:${#numbers.sequence(startPage,endPage)}" th:href="@{/board/list(page=${i})}" th:text="${i}"></a>
+            </div>
+            <div class="pagiset-ctrl" th:if="${endPage<totalpage}">
+              <a class="pagiset-link pagiset-next" th:href="@{/food/list(page=${endPage+1})}">
+                <span class="visually-hidden">다음</span>
+              </a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- [E]opilsol-N24 -->
+  </main>
+  <script src="../board/js/setting.js"></script>
+  <script src="../board/js/plugin.js"></script>
+  <script src="../board/js/template.js"></script>
+  <script src="../board/js/common.js"></script>
+  <script src="../board/js/script.js"></script>
+</body>

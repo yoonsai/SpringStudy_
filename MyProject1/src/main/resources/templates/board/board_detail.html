@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title></title>
+  <link rel="stylesheet" href="../board/css/setting.css">
+  <link rel="stylesheet" href="../board/css/plugin.css">
+  <link rel="stylesheet" href="../board/css/template.css">
+  <link rel="stylesheet" href="../board/css/common.css">
+  <link rel="stylesheet" href="../board/css/style.css">
+</head>
+
+<body>
+  <main class="th-layout-main boardDetail">
+    <!-- [S]opilsol-N25 -->
+    <div class="opilsol-N25" data-bid="RkLtGSdc9o">
+      <div class="content-container">
+        <div class="container-md">
+          <div class="contant-header textset detailTop">
+            <h2 class="textset-tit h2" th:text="${vo.subject}"></h2>
+            <div class="nameTitle">
+              <p class="textset-tit" th:text="${vo.name}"></p>
+              <p class="textset-desc p1" th:text="${vo.regdate}"></p>
+              <p class="textset-desc p1" th:text="'('+${vo.hit}+')'"></p>
+            </div>
+            
+          </div>
+          <div class="contant-body">
+            <p>
+              <span class="br" th:text="${vo.content}"></span>
+            </p>
+          </div>
+          <!-- <div class="contant-bottom">
+            <div class="contant-nav">
+              <button class="con-link-btn prve" type="button">NEXT</button>
+              <a class="con-link" href="javascript:void(0)">고객불만제로를 위한 교육을 실시하였습니다.</a>
+              <span class="date">2023.01.01</span>
+            </div>
+            <div class="contant-nav">
+              <button class="con-link-btn next" type="button">PREV</button>
+              <a class="con-link" href="javascript:void(0)">좋은 솔루션 만들기 위원회 워크숍</a>
+              <span class="date">2023.01.01</span>
+            </div>
+          </div> -->
+          <div class="bottom-btn" style="text-align: right;">
+            <a class="btnset btnset-lg btnset-rect btnSET" th:href="@{../board/update(no=${vo.no})}">수정하기</a>
+            <a class="btnset btnset-lg btnset-rect btnSET" href="javascript:history.back()">목록보기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]opilsol-N25 -->
+  </main>
+  <script src="../board/js/setting.js"></script>
+  <script src="../board/js/plugin.js"></script>
+  <script src="../board/js/template.js"></script>
+  <script src="../board/js/common.js"></script>
+  <script src="../board/js/script.js"></script>
+</body>

@@ -61,6 +61,8 @@ public class ActivityController {
 	public String food_detail(int no,Model model)
 	{
 		Activity vo=dao.findByNo(no);
+		vo.setHit(vo.getHit()+1);
+		dao.save(vo);
 		String[] deimages = vo.getDeimage().split("\\^");
 		String[] conts = vo.getCont().split("\\.");
 		model.addAttribute("vo", vo);

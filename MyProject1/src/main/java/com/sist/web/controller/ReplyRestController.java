@@ -42,9 +42,36 @@ public class ReplyRestController {
 	public List<Reply> replyList(int fno)
 	{
 		 return dao.replyListData(fno);
-		/*
-		 * ObjectMapper mapper=new ObjectMapper(); String
-		 * json=mapper.writeValueAsString(list);
-		 */
 	}
+	@GetMapping("/reply/delete")
+	public String replyDelete(int no)
+	{
+		String result="";
+		try {
+			dao.deleteByNo(no);
+			result="yes";
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			result="no";
+		}
+		return result;
+		
+	}
+	@GetMapping("/reply/update")
+	public String replyUpdate(String content,int no)
+	{
+		System.out.println(content+" "+no);
+		String result="";
+		try {
+			dao.replyUpdate(content, no);
+			result="yes";
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			result="no";
+		}
+		return result;
+	}
+
 }
