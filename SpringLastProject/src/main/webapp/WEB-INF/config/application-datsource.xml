@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+		<!-- properties파일 읽기 -->
+		<util:properties id="db" location="/WEB-INF/config/db.properties"/>
+		<!-- 데이터 정보를 모아준다 -->
+		<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource"
+		  p:driverClassName="#{db['driver']}"
+		  p:url="#{db['url']}"
+		  p:username="#{db['username']}"
+		  p:password="#{db['password']}"
+		  p:maxActive="#{db['maxActive']}"
+		  p:maxIdle="#{db['maxIdle']}"
+		  p:maxWait="#{db['maxWait']}"
+		></bean>
+		<!-- 
+		    maxActive - 연결할 커넥션의 최대 갯수
+		    maxIdle - 풀에 대기시킬 커넥션의 최대 갯수
+		    minIdle - 풀에 대기시킬 커넥션의 최소 갯수 
+		    maxWait - 데이터베이스 연결이 풀에서 사용 가능한 상태로 유지되는 최대 대기 시간
+		   -->
+		<!-- Mybatis로 전송 -->
+		<bean id="ssf" class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="ds"/>
+		<!-- Mapper구현 (인터페이스) -->
+		<mybatis-spring:scan base-package="com.sist.mapper" factory-ref="ssf"/>
+
+</beans>
